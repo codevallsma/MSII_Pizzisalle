@@ -16,18 +16,6 @@ import java.util.List;
 
 public class MysqlCustomerRepo extends BaseRepositories {
 
-    protected Customer mySQLResponseToEntity(ResultSet rs) throws SQLException{
-        Customer customer = new Customer();
-        customer.setCustomerId(Integer.parseInt(rs.getString("id")));
-        customer.setName(rs.getString("name"));
-        customer.setSurname1(rs.getString("surname1"));
-        customer.setSurname2(rs.getString("surname2"));
-        customer.setPhone_number(rs.getString("phone_number"));
-        customer.setAddress(rs.getString("address"));
-        customer.setCity(rs.getString("city"));
-        return customer;
-    }
-
     @Override
     public void onSuccess(Object object, DBMethods dbMethods) {
         try {
@@ -38,7 +26,7 @@ public class MysqlCustomerRepo extends BaseRepositories {
                     newObject = object;
                     break;
                 case GET:
-                    newObject = mySQLResponseToEntity((ResultSet) object);
+                    newObject = resultSetToObject((ResultSet) object);
                     break;
                 case DELETE:
                     // to delete the whole object we will replace the current object for one that it is null
@@ -87,4 +75,18 @@ public class MysqlCustomerRepo extends BaseRepositories {
     public PreparedStatement get(Object object) {
         return null;
     }
+
+    @Override
+    public Object resultSetToObject(ResultSet rs) throws SQLException {
+        Customer customer = new Customer();
+        customer.setCustomerId(Integer.parseInt(rs.getString("id")));
+        customer.setName(rs.getString("name"));
+        customer.setSurname1(rs.getString("surname1"));
+        customer.setSurname2(rs.getString("surname2"));
+        customer.setPhone_number(rs.getString("phone_number"));
+        customer.setAddress(rs.getString("address"));
+        customer.setCity(rs.getString("city"));
+        return customer;
+    }
+
 }

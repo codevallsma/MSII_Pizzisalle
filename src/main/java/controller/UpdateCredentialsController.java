@@ -9,6 +9,7 @@ import model.Model;
 import view.TextColor.LetterColors;
 
 public class UpdateCredentialsController extends ControllerState{
+    private Customer customer;
     public UpdateCredentialsController(ControllerContext context, StateManagement stateManagement) {
         super(context,stateManagement);
     }
@@ -27,18 +28,19 @@ public class UpdateCredentialsController extends ControllerState{
     @Override
     public void printStaticMenu() {
         this.context.view.printToScreen("**** User Credentials Form ****");
-        context.model.getCurrentCustomer().setName( this.context.view.printAndScanColor("Name: ", LetterColors.RED));
-        context.model.getCurrentCustomer().setSurname1(this.context.view.printAndScanColor("Surname: ",LetterColors.RED));
-        context.model.getCurrentCustomer().setSurname2(this.context.view.printAndScanColor("Last Surname: ", LetterColors.RED));
-        context.model.getCurrentCustomer().setPhone_number(this.context.view.printAndScanColor("Introduce your phone number",LetterColors.RED));
-        context.model.getCurrentCustomer().setAddress(this.context.view.printAndScanColor("Address: ",LetterColors.RED));
-        context.model.getCurrentCustomer().setCity(this.context.view.printAndScanColor("City: ",LetterColors.RED));
+        customer = new Customer();
+        customer.setName( this.context.view.printAndScanColor("Name: ", LetterColors.RED));
+        customer.setSurname1(this.context.view.printAndScanColor("Surname: ",LetterColors.RED));
+        customer.setSurname2(this.context.view.printAndScanColor("Last Surname: ", LetterColors.RED));
+        customer.setPhone_number(this.context.view.printAndScanColor("Introduce your phone number",LetterColors.RED));
+        customer.setAddress(this.context.view.printAndScanColor("Address: ",LetterColors.RED));
+        customer.setCity(this.context.view.printAndScanColor("City: ",LetterColors.RED));
     }
 
     @Override
     protected void doAction() {
         //check if the user currently
-        GeneralDBConnector.getDB(DBTypes.MYSQL).insertAndGetId(context.model.getCurrentCustomer(), TableTypes.CUSTOMER);
+        GeneralDBConnector.getDB(DBTypes.MYSQL).insertAndGetId(customer, TableTypes.CUSTOMER);
 
     }
 }

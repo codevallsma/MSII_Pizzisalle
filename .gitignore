@@ -79,5 +79,9 @@ nb-configuration.xml
 .code-workspace
 
 ##############################
-## OS X
-##########
+## CUSTOM PARAMETERS
+##############################
+
+assets/.env
+
+

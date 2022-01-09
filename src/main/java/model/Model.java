@@ -12,7 +12,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static database.Connectors.enums.TableTypes.*;
+/**
+ * OBSERVER METHOD
+ * Every time the data is updated in the database, it is also updated in the Model of the application
+ */
 
 public class Model implements PropertyChangeListener {
     private Customer currentCustomer;
@@ -39,8 +42,8 @@ public class Model implements PropertyChangeListener {
         Optional<TableTypes> tableType = Arrays.stream(TableTypes.values()).findFirst().filter(element -> element.toString().equals(evt.getPropertyName()));
         switch (tableType.get()) {
             case CUSTOMER:
+                //updating the new value to the one recently received from the database
                 setCurrentCustomer((Customer)evt.getNewValue());
-                System.out.println("NOTIFIED BITCH");
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + evt.getPropertyName());
@@ -48,8 +51,6 @@ public class Model implements PropertyChangeListener {
     }
 
     public Customer getCurrentCustomer() {
-        if(currentCustomer == null)
-            return currentCustomer = new Customer();
         return currentCustomer;
     }
 

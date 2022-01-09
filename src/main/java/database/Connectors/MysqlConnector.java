@@ -57,6 +57,7 @@ public class MysqlConnector extends GeneralDBConnector implements GenericDB {
         rs.next();
         Integer id = rs.getInt(1);
         System.out.println(id);
+        object.insertID(id);
         if(!subquery)baseRepository.onSuccess(object,DBMethods.INSERT);
         return id;
     }
@@ -98,8 +99,7 @@ public class MysqlConnector extends GeneralDBConnector implements GenericDB {
         try {
             BaseRepositories br = MapMethodToFunction.getInstance().entityToBaseRepo(this.dbType, tableTypes);
             PreparedStatement ps = MapMethodToFunction.getInstance().entityAction(DBMethods.INSERT, br, object);
-            Integer id = executeInsert(ps, br, (ModifyRamClasses) object);
-            System.out.println("El id es " + id);
+            return executeInsert(ps, br, (ModifyRamClasses) object);
         } catch (SQLException e) {
             e.printStackTrace();
         }
