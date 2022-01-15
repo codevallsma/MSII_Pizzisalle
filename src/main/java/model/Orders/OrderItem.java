@@ -100,4 +100,9 @@ public class OrderItem implements ModifyRamClasses {
     public void insertID(Integer id) {
         this.id_order_item = id;
     }
+
+    @Override
+    public String getName() {
+        return Integer.toString(id_order_item);
+    }
 }

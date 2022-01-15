@@ -31,4 +31,9 @@ public class Massa implements ModifyRamClasses {
     public void insertID(Integer id) {
         this.id_massa = id;
     }
+
+    @Override
+    public String getName() {
+        return tipusMassa;
+    }
 }

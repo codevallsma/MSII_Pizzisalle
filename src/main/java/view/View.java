@@ -1,5 +1,6 @@
 package view;
 
+import model.ModifyRamClasses;
 import model.pizza.Drinks.Drinks;
 import model.pizza.Pizza;
 import view.TextColor.LetterColors;
@@ -49,25 +50,25 @@ public class View {
                 "\t 2. Add Drink\n" +
                 "\t 3. Finish\n");
     }
-    public void printPizzas(List<Pizza> pizzas) {
+
+    /**
+     * All classes implements ModifyRamClasses, therefore, we can take advantage of this to call the getName method to obtain the
+     * information to list
+     * @param list : the list of objects to print
+     * @param itemName: The item name to print to the screen
+     */
+    public void printObjectList(List<? extends ModifyRamClasses> list, String itemName) {
         System.out.println();
-        PrintWithColors.printColorText(LetterColors.CYAN,"---- Select the available pizzas ----");
+        PrintWithColors.printColorText(LetterColors.CYAN,"---- Select the available "+itemName+" ----");
         int j = 0;
-        for (Pizza p : pizzas) {
-            if(j%2 ==0)System.out.print("\t[" + (++j) + "]. " + p.getPizzaName());
-            else System.out.println("\t[" + (++j) + "]. " + p.getPizzaName());
+        for (ModifyRamClasses classes : list) {
+            if(j%2 ==0)System.out.print("\t[" + (++j) + "]. " + classes.getName());
+            else System.out.println("\t[" + (++j) + "]. " + classes.getName());
         }
         System.out.println();
         PrintWithColors.printColorText(LetterColors.CYAN,"--------------------");
     }
-    public void printDrinks(List<Drinks> drinks) {
-        System.out.println();
-        System.out.println("---- Begudes disponibles ----");
-        for (int i = 0; i < drinks.size(); i++) {
-            Drinks d = drinks.get(i);
-            //System.out.println("\t[" + (i+1) + "]. " + d.getName());
-        }
-    }
+
     public void delegationMenu() {
         PrintWithColors.printColorText(LetterColors.CYAN,  "\nChoose your delegation:\n" +
                 "\t[1]. Barcelona\n" +
@@ -95,15 +96,6 @@ public class View {
     public String printAndScanColor(String message, LetterColors letterColor){
         PrintWithColors.printColorText(letterColor,message);
         return scanner.nextLine();
-    }
-    private static String createGridCart(int cols, List<String> items) {
-        StringBuilder res = new StringBuilder();
-        for (int i = 0; i < items.size(); i++) {
-            res.append(i + 1).append(". ").append(items.get(i)).append(" ");
-            if (i > 0 && i % cols == 0) res.append("\n");
-        }
-        res.append("\n");
-        return res.toString();
     }
 
     public Scanner getUserInput() {

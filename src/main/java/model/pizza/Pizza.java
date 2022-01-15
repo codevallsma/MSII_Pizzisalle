@@ -20,11 +20,12 @@ public class Pizza implements ModifyRamClasses {
         this.id_pizza = id;
     }
 
-    public Integer getId_pizza() {
-        return id_pizza;
+    @Override
+    public String getName() {
+        return pizzaName;
     }
 
-    public String getPizzaName() {
-        return pizzaName;
+    public Integer getId_pizza() {
+        return id_pizza;
     }
 }

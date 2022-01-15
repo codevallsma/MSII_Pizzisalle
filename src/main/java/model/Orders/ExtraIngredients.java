@@ -42,4 +42,9 @@ public class ExtraIngredients implements ModifyRamClasses {
     public void insertID(Integer id) {
         this.id_order_item = id_ingredient;
     }
+
+    @Override
+    public String getName() {
+        return "NONE";
+    }
 }

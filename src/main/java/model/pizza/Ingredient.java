@@ -1,6 +1,8 @@
 package model.pizza;
 
-public class Ingredient {
+import model.ModifyRamClasses;
+
+public class Ingredient implements ModifyRamClasses {
     private Integer id_ingredient;
     private String ingredient;
 
@@ -18,5 +20,15 @@ public class Ingredient {
 
     public void setIngredient(String ingredient) {
         this.ingredient = ingredient;
+    }
+
+    @Override
+    public void insertID(Integer id) {
+        this.id_ingredient = id;
+    }
+
+    @Override
+    public String getName() {
+       return ingredient;
     }
 }

@@ -21,6 +21,9 @@ public class Drinks implements ModifyRamClasses {
         this.drink = drink;
     }
 
+    public Drinks() {
+    }
+
     public Drinks(String drink) throws DrinkNotFoundException {
         this.drink = DrinkBuilder.drinkBuilder(drink);
     }
@@ -44,5 +47,10 @@ public class Drinks implements ModifyRamClasses {
     @Override
     public void insertID(Integer id) {
         this.id_drink = id;
+    }
+
+    @Override
+    public String getName() {
+        return drink.toString();
     }
 }

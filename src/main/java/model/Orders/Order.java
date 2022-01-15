@@ -24,4 +24,9 @@ public class Order implements ModifyRamClasses {
     public void insertID(Integer id) {
         this.id_order = id;
     }
+
+    @Override
+    public String getName() {
+        return Integer.toString(id_order);
+    }
 }

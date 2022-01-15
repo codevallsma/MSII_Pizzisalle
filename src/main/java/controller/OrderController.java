@@ -6,8 +6,10 @@ import database.Connectors.GeneralDBConnector;
 import database.Connectors.enums.DBTypes;
 import database.Connectors.enums.TableTypes;
 import model.Model;
+import model.ModifyRamClasses;
 import view.TextColor.LetterColors;
 
+import java.util.List;
 import java.util.Objects;
 
 public class OrderController extends ControllerState{
@@ -41,14 +43,20 @@ public class OrderController extends ControllerState{
     @Override
     protected void doAction() {
         switch (optionSelected){
+            //PIZZA CASE
             case 1:
                 // getting all the pizza elements
                 Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).getAll(TableTypes.PIZZA, Model.getInstance().getCurrentDelegation());
                 //printing the received pizzas
-                context.view.printPizzas(Model.getInstance().getAllPizzas());
+                context.view.printObjectList(Model.getInstance().getAllPizzas(),"pizzas");
+                //asking for extra ingredients
                 break;
+            //DRINKS CASE
             case 2:
-                // drink
+                // getting all the drinks available in the store
+                Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).getAll(TableTypes.DRINK);
+                // printing all the drinks to the screen
+                context.view.printObjectList(Model.getInstance().getDrinks(), "drinks");
                 break;
             case 3:
                 //order finished

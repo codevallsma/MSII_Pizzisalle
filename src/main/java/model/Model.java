@@ -7,6 +7,7 @@ import model.Delegation.DelegationBuilder;
 import model.Delegation.DelegationCentral;
 import model.Orders.CustomerOrder;
 import model.Orders.Order;
+import model.pizza.Drinks.Drinks;
 import model.pizza.Pizza;
 
 import java.beans.PropertyChangeEvent;
@@ -25,15 +26,13 @@ public class Model implements PropertyChangeListener {
     private List<Order> orders;
     //the list of pizzas available to buy
     private List<Pizza> allPizzas;
+    //the list of all the available drinks
+    private List<Drinks> drinks;
     //current delegation
     Delegation currentDelegation;
+    private static Model instance = null;
 
-
-    private static final class InstanceHolder {
-        private static final Model instance = new Model();
-    }
-
-    public Model() {
+    private Model() {
         currentCustomer = null;
         customerOrder = new CustomerOrder();
         orders = new ArrayList<>();
@@ -41,12 +40,16 @@ public class Model implements PropertyChangeListener {
         // when initializing the model we have to randomly select a delegation
         Random random = new Random();
         // length is the upper bound of the random number selector
-        int random_index = random.nextInt(DelegationCentral.values().length-1);
-        currentDelegation = DelegationBuilder.buildDelegation(random_index);
+        int random_index = random.nextInt(DelegationCentral.values().length);
+        //System.out.println("EL NUMERO ES "+random_index+" i el length es "+DelegationCentral.values().length);
+        currentDelegation = DelegationBuilder.buildDelegation(random_index+1);
     }
 
     public static Model getInstance() {
-        return Model.InstanceHolder.instance;
+        if(Model.instance == null) {
+            return Model.instance = new Model();
+        }
+        return instance;
     }
 
     @Override
@@ -59,7 +62,12 @@ public class Model implements PropertyChangeListener {
                 setCurrentCustomer((Customer)evt.getNewValue());
                 break;
             case PIZZA:
+                //updating all the available pizzas
                 setAllPizzas((List<Pizza>) evt.getNewValue());
+                break;
+            case DRINK:
+                //updating all the drinks
+                this.setDrinks((List<Drinks>) evt.getNewValue());
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + evt.getPropertyName());
@@ -96,6 +104,14 @@ public class Model implements PropertyChangeListener {
 
     public void setAllPizzas(List<Pizza> allPizzas) {
         this.allPizzas = allPizzas;
+    }
+
+    public List<Drinks> getDrinks() {
+        return drinks;
+    }
+
+    public void setDrinks(List<Drinks> drinks) {
+        this.drinks = drinks;
     }
 
     public Delegation getCurrentDelegation() {

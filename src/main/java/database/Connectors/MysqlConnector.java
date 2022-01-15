@@ -99,7 +99,7 @@ public class MysqlConnector extends GeneralDBConnector implements GenericDB {
         try {
             BaseRepositories br = MapMethodToFunction.getInstance().entityToBaseRepo(this.dbType, tableTypes);
             PreparedStatement ps = MapMethodToFunction.getInstance().entityAction(DBMethods.GET_ALL, br, null);
-            //return executeInsert(ps, br, (ModifyRamClasses) object);
+            this.executeSelectAll(ps, br);
         } catch (SQLException e) {
             e.printStackTrace();
         }

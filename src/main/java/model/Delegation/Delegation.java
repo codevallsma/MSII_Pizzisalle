@@ -18,7 +18,7 @@ public class Delegation implements ModifyRamClasses {
     public void setId(Integer id) {
         this.id = id;
     }
-
+    @Override
     public String getName() {
         return name;
     }

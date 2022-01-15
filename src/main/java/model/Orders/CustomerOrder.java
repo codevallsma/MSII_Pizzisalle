@@ -65,4 +65,9 @@ public class CustomerOrder implements ModifyRamClasses {
     public void insertID(Integer id) {
         this.idOrder = id ;
     }
+
+    @Override
+    public String getName() {
+        return Integer.toString(idOrder);
+    }
 }
