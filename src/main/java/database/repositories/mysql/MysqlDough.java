@@ -43,6 +43,11 @@ public class MysqlDough extends BaseRepositories {
     }
 
     @Override
+    public PreparedStatement getById(Object object) {
+        return null;
+    }
+
+    @Override
     public PreparedStatement getAll(Object object) throws SQLException {
         // no object is needed in this get all
         return MysqlConnector.getInstance().getConn().prepareStatement(

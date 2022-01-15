@@ -1,5 +1,7 @@
 package view;
 
+import model.Customer;
+import model.Delegation.Delegation;
 import model.ModifyRamClasses;
 import view.TextColor.LetterColors;
 import view.TextColor.PrintWithColors;
@@ -20,11 +22,23 @@ public class View {
         // ask for username
     }
 
-    public String askForUsername () {
-        PrintWithColors.printColorText(LetterColors.RED,"*************************************************");
-        String username = printAndScanColor("           Do you have username?                 ", LetterColors.RED);
-        PrintWithColors.printColorText(LetterColors.RED,"*************************************************");
+    public String askForCustomerId() {
+        PrintWithColors.printColorText(LetterColors.CYAN,"*************************************************");
+        String username = printAndScanColor("PLEASE PROVIDE YOUR CUSTOMER ID IN ORDER TO BE IDENTIFIED AS A REGISTERED USER: ", LetterColors.RED);
+        PrintWithColors.printColorText(LetterColors.CYAN,"*************************************************");
         return username;
+    }
+
+    public void printUserInformation(Customer customer, String delegation) {
+        PrintWithColors.printColorText(LetterColors.GREEN,"" +
+                "----------------------------------------------------------------\n" +
+                " CUSTOMER INFORMATION: "+
+                "\nClient id: " + customer.getCustomerId() +
+                "\nClient name: " + customer.getName() +
+                "\nClient surname: " + customer.getSurname1() +
+                "\nClient last name: " + customer.getSurname2() +
+                "\nDelegation: " + delegation +
+                "\n----------------------------------------------------------------");
     }
 
     public void createCustomerMenu() {
@@ -36,10 +50,11 @@ public class View {
                 "\t[5] Exit\n" +
                 "Option: ");
     }
-    public void createDoYouHaveUsername() {
-        PrintWithColors.printColorText(LetterColors.CYAN,"\nAre you a returning buyer or a new one?\n" +
+    public String createDoYouHaveUsername() {
+        return  "\nAre you a returning buyer or a new one?\n" +
                 "\t[1] Returning buyer\n" +
-                "\t[2] New buyer\n");
+                "\t[2] New buyer\n"+
+                "Select option: ";
     }
 
     public void showOrderOptions() {
@@ -84,18 +99,18 @@ public class View {
         return list.get(optionSelected-1);
     }
 
-    public int askForQuantity(){
+    public int menuAskOption(String message, int limit){
         int option = 1;
         boolean loop = false;
         do {
-            if(loop)errorMessageMenu(10);
+            if(loop)errorMessageMenu(limit);
             try {
-                option = Integer.parseInt(printAndScanColor("How much of this product do you want?(Quantities go from 1 to 10) ", LetterColors.CYAN));
+                option = Integer.parseInt(printAndScanColor(message, LetterColors.CYAN));
             } catch (NumberFormatException exception) {
-                option += 11;
+                option += limit;
             }
             loop=true;
-        }while(option<1 || option>10);
+        }while(option<1 || option>limit);
         return option;
     }
 

@@ -1,6 +1,7 @@
 package controller;
 
 import controller.StateManagement.StateManagement;
+import controller.StateManagement.StateTypes;
 import database.Connectors.GeneralDBConnector;
 import database.Connectors.enums.DBTypes;
 import database.Connectors.enums.TableTypes;
@@ -22,7 +23,7 @@ public class UpdateCredentialsController extends ControllerState{
 
     @Override
     public void onNext() {
-
+        this.changeStateInterface.pushState(StateTypes.PRINT_CUSTOMER_INFO);
     }
 
     @Override

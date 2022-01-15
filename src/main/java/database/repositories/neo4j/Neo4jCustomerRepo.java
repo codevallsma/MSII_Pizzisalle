@@ -43,6 +43,11 @@ public class Neo4jCustomerRepo extends BaseRepositories implements CrudOperation
     }
 
     @Override
+    public PreparedStatement getById(Object object) {
+        return null;
+    }
+
+    @Override
     public PreparedStatement getAll(Object object) throws SQLException {
         return null;
     }

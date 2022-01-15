@@ -28,6 +28,7 @@ public class StateManagement implements ChangeStateInterface {
         ControllerState updateCredentials = new UpdateCredentialsController(controllerContext, this);
         ControllerState goodbyeController = new GoodbyeController(controllerContext, this);
         ControllerState updateDelegation = new DelegationController(controllerContext, this);
+        ControllerState printCustomerController = new PrintCustomerController(controllerContext, this);
         controllerStates.put(StateTypes.WELCOME,welcome);
         controllerStates.put(StateTypes.SHOW_MENU, showMenu);
         controllerStates.put(StateTypes.MAKE_ORDER, makeOrder);
@@ -35,6 +36,7 @@ public class StateManagement implements ChangeStateInterface {
         controllerStates.put(StateTypes.UPDATE_CREDENTIALS,updateCredentials);
         controllerStates.put(StateTypes.EXIT, goodbyeController);
         controllerStates.put(StateTypes.UPDATE_DELEGATION, updateDelegation);
+        controllerStates.put(StateTypes.PRINT_CUSTOMER_INFO,printCustomerController);
     }
 
     @Override
@@ -63,7 +65,7 @@ public class StateManagement implements ChangeStateInterface {
     @Override
     public void runStateManagement() {
         //the welcome controller is only executed once
-        controllerStates.get(StateTypes.WELCOME).showMenuAndInteract();
+        pushState(StateTypes.WELCOME);
         while (isRunning){
             currentState = nextState();
             currentState.showMenuAndInteract();

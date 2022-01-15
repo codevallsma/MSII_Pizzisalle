@@ -64,11 +64,11 @@ public class MysqlConnector extends GeneralDBConnector implements GenericDB {
     }
 
     // SELECT -> We do need the searched element in the subscriber classes
-    private Object executeSelect(PreparedStatement ps, BaseRepositories  baseRepository) throws SQLException {
+    private void executeSelect(PreparedStatement ps, BaseRepositories  baseRepository) throws SQLException {
         //we execute the  query
         ResultSet rs = ps.executeQuery();
+        if(rs.next())
         if(!subquery)baseRepository.onSuccess(rs,DBMethods.GET);
-        return ps.getGeneratedKeys().getInt(1);
     }
 
     private void executeSelectAll(PreparedStatement ps, BaseRepositories  baseRepository) throws SQLException {
@@ -90,8 +90,15 @@ public class MysqlConnector extends GeneralDBConnector implements GenericDB {
     }
 
     @Override
-    public Object getById(Integer id, TableTypes tableTypes) {
-        return null;
+    public void getById(Integer id, TableTypes tableTypes) {
+        try {
+            BaseRepositories br = MapMethodToFunction.getInstance().entityToBaseRepo(this.dbType, tableTypes);
+            PreparedStatement ps = MapMethodToFunction.getInstance().entityAction(DBMethods.GET_BY_ID, br, id);
+            this.executeSelect(ps, br);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

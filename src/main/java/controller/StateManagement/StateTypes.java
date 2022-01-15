@@ -7,5 +7,6 @@ public enum StateTypes {
     CART,
     UPDATE_CREDENTIALS,
     UPDATE_DELEGATION,
+    PRINT_CUSTOMER_INFO,
     EXIT
 }

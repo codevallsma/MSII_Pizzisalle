@@ -4,7 +4,7 @@ import database.Connectors.enums.TableTypes;
 
 public interface GenericDB<Param> {
     Param get(Object object,TableTypes tableTypes);
-    Param getById(Integer id, TableTypes tableTypes);
+    void getById(Integer id, TableTypes tableTypes);
     void getAll(TableTypes tableTypes);
     void getAll(TableTypes tableTypes, Object object);
     Integer insertAndGetId(Object object, TableTypes tableTypes);

@@ -85,8 +85,7 @@ public class Node4JConnector extends GeneralDBConnector {
     }
 
     @Override
-    public Object getById(Integer id, TableTypes tableTypes) {
-        return null;
+    public void getById(Integer id, TableTypes tableTypes) {
     }
 
     @Override

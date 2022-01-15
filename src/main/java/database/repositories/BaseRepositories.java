@@ -42,7 +42,7 @@ public abstract class BaseRepositories implements DatabaseCallBack, CrudOperatio
                     // we just inserted this object in the database
                     newObject = object;
                     break;
-                case GET:
+                case GET: case GET_BY_ID:
                     newObject = resultSetToObject((ResultSet) object);
                     break;
                 case DELETE:

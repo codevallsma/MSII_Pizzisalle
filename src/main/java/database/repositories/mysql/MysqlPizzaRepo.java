@@ -66,6 +66,11 @@ public class MysqlPizzaRepo extends BaseRepositories {
         return null;
     }
 
+    @Override
+    public PreparedStatement getById(Object object) {
+        return null;
+    }
+
     /**
      * Gets the all pizzas given the delegation the customer is
      * @param object
