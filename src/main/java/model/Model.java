@@ -2,15 +2,17 @@ package model;
 
 import database.Connectors.MysqlConnector;
 import database.Connectors.enums.TableTypes;
+import model.Delegation.Delegation;
+import model.Delegation.DelegationBuilder;
+import model.Delegation.DelegationCentral;
 import model.Orders.CustomerOrder;
 import model.Orders.Order;
+import model.pizza.Pizza;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * OBSERVER METHOD
@@ -21,6 +23,11 @@ public class Model implements PropertyChangeListener {
     private Customer currentCustomer;
     private CustomerOrder customerOrder;
     private List<Order> orders;
+    //the list of pizzas available to buy
+    private List<Pizza> allPizzas;
+    //current delegation
+    Delegation currentDelegation;
+
 
     private static final class InstanceHolder {
         private static final Model instance = new Model();
@@ -30,7 +37,12 @@ public class Model implements PropertyChangeListener {
         currentCustomer = null;
         customerOrder = new CustomerOrder();
         orders = new ArrayList<>();
-
+        allPizzas = new ArrayList<>();
+        // when initializing the model we have to randomly select a delegation
+        Random random = new Random();
+        // length is the upper bound of the random number selector
+        int random_index = random.nextInt(DelegationCentral.values().length-1);
+        currentDelegation = DelegationBuilder.buildDelegation(random_index);
     }
 
     public static Model getInstance() {
@@ -39,11 +51,15 @@ public class Model implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        Optional<TableTypes> tableType = Arrays.stream(TableTypes.values()).findFirst().filter(element -> element.toString().equals(evt.getPropertyName()));
+        Optional<TableTypes> tableType =
+                Arrays.asList(TableTypes.values()).stream().filter(element -> element.toString().compareTo(evt.getPropertyName())==0).findAny();
         switch (tableType.get()) {
             case CUSTOMER:
                 //updating the new value to the one recently received from the database
                 setCurrentCustomer((Customer)evt.getNewValue());
+                break;
+            case PIZZA:
+                setAllPizzas((List<Pizza>) evt.getNewValue());
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + evt.getPropertyName());
@@ -74,8 +90,24 @@ public class Model implements PropertyChangeListener {
         this.orders = orders;
     }
 
+    public List<Pizza> getAllPizzas() {
+        return allPizzas;
+    }
+
+    public void setAllPizzas(List<Pizza> allPizzas) {
+        this.allPizzas = allPizzas;
+    }
+
+    public Delegation getCurrentDelegation() {
+        return currentDelegation;
+    }
+
     public void subscribeTables(){
-        MysqlConnector.getInstance().startObservingTable(TableTypes.CUSTOMER, this);
+        //subscribing to all tables
+        for (TableTypes tt:
+             TableTypes.values()) {
+            MysqlConnector.getInstance().startObservingTable(tt, this);
+        }
     }
     public void unsubscribeTableAlerts(){
         MysqlConnector.getInstance().stopObservingTable(TableTypes.CUSTOMER, this);

@@ -9,5 +9,6 @@ public interface CrudOperations <ReturnParameter,Object> {
   ReturnParameter delete(Object object);
   ReturnParameter update(Object object);
   ReturnParameter get(Object object);
+  ReturnParameter getAll(Object object) throws SQLException;
   Object resultSetToObject(ResultSet resultSet) throws SQLException;
 }

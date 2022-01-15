@@ -4,7 +4,6 @@ import Utils.Passwords;
 import database.Connectors.enums.DBMethods;
 import database.Connectors.enums.DBTypes;
 import database.Connectors.enums.TableTypes;
-import database.Connectors.interfaces.DatabaseCallBack;
 import database.Connectors.interfaces.GenericDB;
 import database.mappers.MapMethodToFunction;
 import database.repositories.BaseRepositories;
@@ -12,14 +11,8 @@ import model.ModifyRamClasses;
 
 import java.beans.PropertyChangeListener;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import static java.sql.ResultSet.*;
-import static java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE;
 
 /**
  * WE ARE USING THE SINGLETON PATTERN
@@ -78,6 +71,18 @@ public class MysqlConnector extends GeneralDBConnector implements GenericDB {
         return ps.getGeneratedKeys().getInt(1);
     }
 
+    private void executeSelectAll(PreparedStatement ps, BaseRepositories  baseRepository) throws SQLException {
+        //we execute the select query
+        ResultSet rs = ps.executeQuery();
+        //multiple results, so we will create a list of results
+        List<Object> list  = new ArrayList<Object>();
+        //loop while there is more results to retrieve
+        while (rs.next()){
+            //add the current result to the list of results
+            list.add(baseRepository.resultSetToObject(rs));
+        }
+        if(!subquery)baseRepository.onSuccess(list,DBMethods.GET_ALL);
+    }
 
     @Override
     public Object get(Object object, TableTypes tableTypes) {
@@ -90,8 +95,25 @@ public class MysqlConnector extends GeneralDBConnector implements GenericDB {
     }
 
     @Override
-    public List getAll(TableTypes tableTypes) {
-        return null;
+    public void getAll(TableTypes tableTypes) {
+        try {
+            BaseRepositories br = MapMethodToFunction.getInstance().entityToBaseRepo(this.dbType, tableTypes);
+            PreparedStatement ps = MapMethodToFunction.getInstance().entityAction(DBMethods.GET_ALL, br, null);
+            //return executeInsert(ps, br, (ModifyRamClasses) object);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getAll(TableTypes tableTypes, Object object) {
+        try {
+            BaseRepositories br = MapMethodToFunction.getInstance().entityToBaseRepo(this.dbType, tableTypes);
+            PreparedStatement ps = MapMethodToFunction.getInstance().entityAction(DBMethods.GET_ALL, br, object);
+            this.executeSelectAll(ps, br);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

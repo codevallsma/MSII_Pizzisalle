@@ -2,7 +2,13 @@ package controller;
 
 import controller.StateManagement.ChangeStateInterface;
 import controller.StateManagement.StateManagement;
+import database.Connectors.GeneralDBConnector;
+import database.Connectors.enums.DBTypes;
+import database.Connectors.enums.TableTypes;
+import model.Model;
 import view.TextColor.LetterColors;
+
+import java.util.Objects;
 
 public class OrderController extends ControllerState{
 
@@ -13,8 +19,10 @@ public class OrderController extends ControllerState{
     @Override
     public void showMenuAndInteract() {
         //there is no more than 3 options to select
-        showMenuAndCheckIfInbounds(3);
-        doAction();
+        do {
+            showMenuAndCheckIfInbounds(3);
+            doAction();
+        }while (optionSelected != 3);
     }
 
     @Override
@@ -34,7 +42,10 @@ public class OrderController extends ControllerState{
     protected void doAction() {
         switch (optionSelected){
             case 1:
-                //pizza
+                // getting all the pizza elements
+                Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).getAll(TableTypes.PIZZA, Model.getInstance().getCurrentDelegation());
+                //printing the received pizzas
+                context.view.printPizzas(Model.getInstance().getAllPizzas());
                 break;
             case 2:
                 // drink
@@ -42,6 +53,8 @@ public class OrderController extends ControllerState{
             case 3:
                 //order finished
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + optionSelected);
         }
     }
 }

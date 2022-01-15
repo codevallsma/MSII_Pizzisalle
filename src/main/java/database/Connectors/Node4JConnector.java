@@ -3,14 +3,11 @@ package database.Connectors;
 import Utils.Passwords;
 import database.Connectors.enums.DBTypes;
 import database.Connectors.enums.TableTypes;
-import database.Connectors.interfaces.DatabaseCallBack;
 
 import java.beans.PropertyChangeListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 
 /**
@@ -93,8 +90,11 @@ public class Node4JConnector extends GeneralDBConnector {
     }
 
     @Override
-    public List getAll(TableTypes tableTypes) {
-        return null;
+    public void getAll(TableTypes tableTypes) { }
+
+    @Override
+    public void getAll(TableTypes tableTypes, Object object) {
+
     }
 
     @Override

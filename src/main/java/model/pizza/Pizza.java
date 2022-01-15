@@ -19,4 +19,12 @@ public class Pizza implements ModifyRamClasses {
     public void insertID(Integer id) {
         this.id_pizza = id;
     }
+
+    public Integer getId_pizza() {
+        return id_pizza;
+    }
+
+    public String getPizzaName() {
+        return pizzaName;
+    }
 }

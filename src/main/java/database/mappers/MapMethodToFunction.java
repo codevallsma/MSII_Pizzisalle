@@ -68,6 +68,8 @@ public class MapMethodToFunction {
                     return baseRepository.get(object);
                 case UPDATE:
                     return baseRepository.update(object);
+                case GET_ALL:
+                    return baseRepository.getAll(object);
             }
             return null;
     }

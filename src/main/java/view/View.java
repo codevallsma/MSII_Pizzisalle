@@ -1,5 +1,7 @@
 package view;
 
+import model.pizza.Drinks.Drinks;
+import model.pizza.Pizza;
 import view.TextColor.LetterColors;
 import view.TextColor.PrintWithColors;
 
@@ -47,7 +49,25 @@ public class View {
                 "\t 2. Add Drink\n" +
                 "\t 3. Finish\n");
     }
-
+    public void printPizzas(List<Pizza> pizzas) {
+        System.out.println();
+        PrintWithColors.printColorText(LetterColors.CYAN,"---- Select the available pizzas ----");
+        int j = 0;
+        for (Pizza p : pizzas) {
+            if(j%2 ==0)System.out.print("\t[" + (++j) + "]. " + p.getPizzaName());
+            else System.out.println("\t[" + (++j) + "]. " + p.getPizzaName());
+        }
+        System.out.println();
+        PrintWithColors.printColorText(LetterColors.CYAN,"--------------------");
+    }
+    public void printDrinks(List<Drinks> drinks) {
+        System.out.println();
+        System.out.println("---- Begudes disponibles ----");
+        for (int i = 0; i < drinks.size(); i++) {
+            Drinks d = drinks.get(i);
+            //System.out.println("\t[" + (i+1) + "]. " + d.getName());
+        }
+    }
     public void delegationMenu() {
         PrintWithColors.printColorText(LetterColors.CYAN,  "\nChoose your delegation:\n" +
                 "\t[1]. Barcelona\n" +

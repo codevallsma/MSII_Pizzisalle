@@ -2,6 +2,8 @@ package controller;
 
 import controller.StateManagement.ChangeStateInterface;
 import controller.StateManagement.StateTypes;
+import model.Model;
+import view.TextColor.LetterColors;
 
 public class WelcomeController extends ControllerState {
 
@@ -32,6 +34,7 @@ public class WelcomeController extends ControllerState {
         //check if user exists
         //if it does not
         this.context.view.showWelcomeText();
+        this.context.view.printToScreenColor(this.context.model.getCurrentDelegation().getName()+" is the current delegation", LetterColors.BLUE);
         userInput = this.context.view.askForUsername();
     }
 
