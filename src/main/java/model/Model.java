@@ -7,7 +7,9 @@ import model.Delegation.DelegationBuilder;
 import model.Delegation.DelegationCentral;
 import model.Orders.CustomerOrder;
 import model.Orders.Order;
+import model.pizza.Dough;
 import model.pizza.Drinks.Drinks;
+import model.pizza.Ingredient;
 import model.pizza.Pizza;
 
 import java.beans.PropertyChangeEvent;
@@ -28,6 +30,9 @@ public class Model implements PropertyChangeListener {
     private List<Pizza> allPizzas;
     //the list of all the available drinks
     private List<Drinks> drinks;
+    //List of all dough
+    private List<Dough> doughs;
+    private List<Ingredient> ingredients;
     //current delegation
     Delegation currentDelegation;
     private static Model instance = null;
@@ -37,6 +42,8 @@ public class Model implements PropertyChangeListener {
         customerOrder = new CustomerOrder();
         orders = new ArrayList<>();
         allPizzas = new ArrayList<>();
+        ingredients = new ArrayList<>();
+        doughs = new ArrayList<>();
         // when initializing the model we have to randomly select a delegation
         Random random = new Random();
         // length is the upper bound of the random number selector
@@ -68,6 +75,13 @@ public class Model implements PropertyChangeListener {
             case DRINK:
                 //updating all the drinks
                 this.setDrinks((List<Drinks>) evt.getNewValue());
+                break;
+            case INGREDIENT:
+                //setting all the available ingredients to the list of ingredients
+                this.setIngredients((List<Ingredient>) evt.getNewValue());
+                break;
+            case DOUGH:
+                this.setDoughs((List<Dough>) evt.getNewValue());
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + evt.getPropertyName());
@@ -114,6 +128,22 @@ public class Model implements PropertyChangeListener {
         this.drinks = drinks;
     }
 
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public List<Dough> getDoughs() {
+        return doughs;
+    }
+
+    public void setDoughs(List<Dough> doughs) {
+        this.doughs = doughs;
+    }
+
     public Delegation getCurrentDelegation() {
         return currentDelegation;
     }
@@ -126,6 +156,10 @@ public class Model implements PropertyChangeListener {
         }
     }
     public void unsubscribeTableAlerts(){
-        MysqlConnector.getInstance().stopObservingTable(TableTypes.CUSTOMER, this);
+        //unsubscri
+        for (TableTypes tt:
+                TableTypes.values()) {
+            MysqlConnector.getInstance().stopObservingTable(tt, this);
+        }
     }
 }

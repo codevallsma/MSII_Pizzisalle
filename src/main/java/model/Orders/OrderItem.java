@@ -2,7 +2,7 @@ package model.Orders;
 
 import model.ModifyRamClasses;
 import model.pizza.Drinks.Drinks;
-import model.pizza.Massa;
+import model.pizza.Dough;
 import model.pizza.Pizza;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class OrderItem implements ModifyRamClasses {
     //only id in database
     private Pizza pizza;
     private int pizzaQuantity;
-    private Massa massa;
+    private Dough dough;
     // extra ingredients the user will be able to ask for
     private ArrayList<ExtraIngredients> extraIngredients;
     //only id in database
@@ -21,11 +21,11 @@ public class OrderItem implements ModifyRamClasses {
     //the foreign key that refers to the total orders
     private Integer id_order;
 
-    public OrderItem(int id_order_item, Pizza pizza, int pizzaQuantity, Massa massa ,ArrayList<ExtraIngredients> extraIngredients, Drinks drink, Integer drinkQuantity, Integer id_order) {
+    public OrderItem(int id_order_item, Pizza pizza, int pizzaQuantity, Dough dough, ArrayList<ExtraIngredients> extraIngredients, Drinks drink, Integer drinkQuantity, Integer id_order) {
         this.id_order_item = id_order_item;
         this.pizza = pizza;
         this.pizzaQuantity = pizzaQuantity;
-        this.massa = massa;
+        this.dough = dough;
         this.extraIngredients = extraIngredients;
         this.drink = drink;
         this.drinkQuantity = drinkQuantity;
@@ -64,12 +64,12 @@ public class OrderItem implements ModifyRamClasses {
         this.extraIngredients = extraIngredients;
     }
 
-    public Massa getMassa() {
-        return massa;
+    public Dough getMassa() {
+        return dough;
     }
 
-    public void setMassa(Massa massa) {
-        this.massa = massa;
+    public void setMassa(Dough dough) {
+        this.dough = dough;
     }
 
     public Drinks getDrink() {

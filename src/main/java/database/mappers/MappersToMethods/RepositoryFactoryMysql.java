@@ -2,9 +2,7 @@ package database.mappers.MappersToMethods;
 
 import database.Connectors.enums.TableTypes;
 import database.repositories.BaseRepositories;
-import database.repositories.mysql.MysqlCustomerRepo;
-import database.repositories.mysql.MysqlDrinkRepo;
-import database.repositories.mysql.MysqlPizzaRepo;
+import database.repositories.mysql.*;
 
 public class RepositoryFactoryMysql extends RepositoriesFactory{
     @Override
@@ -16,6 +14,10 @@ public class RepositoryFactoryMysql extends RepositoriesFactory{
                 return new MysqlPizzaRepo();
             case DRINK:
                 return new MysqlDrinkRepo();
+            case INGREDIENT:
+                return new MysqlIngredientRepo();
+            case DOUGH:
+                return new MysqlDough();
         }
         return null;
     }

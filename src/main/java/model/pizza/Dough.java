@@ -2,11 +2,11 @@ package model.pizza;
 
 import model.ModifyRamClasses;
 
-public class Massa implements ModifyRamClasses {
+public class Dough implements ModifyRamClasses {
     private Integer id_massa;
     private String tipusMassa;
 
-    public Massa(Integer id_massa, String tipusMassa) {
+    public Dough(Integer id_massa, String tipusMassa) {
         this.id_massa = id_massa;
         this.tipusMassa = tipusMassa;
     }

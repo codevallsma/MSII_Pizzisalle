@@ -3,7 +3,9 @@ package database.Connectors.enums;
 public enum TableTypes {
     CUSTOMER("Customer"),
     PIZZA("Pizza"),
-    DRINK("Drink");
+    DRINK("Drink"),
+    INGREDIENT("Ingredient"),
+    DOUGH("Dough");
 
     private final String tableType;
     TableTypes(String tableType) {

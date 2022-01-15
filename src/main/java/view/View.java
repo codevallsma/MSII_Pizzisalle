@@ -1,8 +1,6 @@
 package view;
 
 import model.ModifyRamClasses;
-import model.pizza.Drinks.Drinks;
-import model.pizza.Pizza;
 import view.TextColor.LetterColors;
 import view.TextColor.PrintWithColors;
 
@@ -57,16 +55,48 @@ public class View {
      * @param list : the list of objects to print
      * @param itemName: The item name to print to the screen
      */
-    public void printObjectList(List<? extends ModifyRamClasses> list, String itemName) {
+    public Object printObjectList(List<? extends ModifyRamClasses> list, String itemName) {
         System.out.println();
-        PrintWithColors.printColorText(LetterColors.CYAN,"---- Select the available "+itemName+" ----");
+        PrintWithColors.printColorText(LetterColors.CYAN,"---- Select the available "+itemName+"s ----");
         int j = 0;
         for (ModifyRamClasses classes : list) {
             if(j%2 ==0)System.out.print("\t[" + (++j) + "]. " + classes.getName());
             else System.out.println("\t[" + (++j) + "]. " + classes.getName());
         }
-        System.out.println();
+        int optionSelected = 1;
+        int listSize = list.size();
+        boolean secondOrMore = false;
+        do {
+            System.out.println();
+            System.out.println();
+            if(secondOrMore){
+                errorMessageMenu(listSize);
+            }
+            System.out.print("Select the "+itemName+" to choose: ");
+            try {
+                optionSelected = Integer.parseInt(scanner.nextLine());
+            }catch (NumberFormatException exception){
+                optionSelected+=listSize;
+            }
+            secondOrMore = true;
+        } while(optionSelected< 1 || optionSelected > listSize);
         PrintWithColors.printColorText(LetterColors.CYAN,"--------------------");
+        return list.get(optionSelected-1);
+    }
+
+    public int askForQuantity(){
+        int option = 1;
+        boolean loop = false;
+        do {
+            if(loop)errorMessageMenu(10);
+            try {
+                option = Integer.parseInt(printAndScanColor("How much of this product do you want?(Quantities go from 1 to 10) ", LetterColors.CYAN));
+            } catch (NumberFormatException exception) {
+                option += 11;
+            }
+            loop=true;
+        }while(option<1 || option>10);
+        return option;
     }
 
     public void delegationMenu() {

@@ -1,15 +1,16 @@
 package controller;
 
-import controller.StateManagement.ChangeStateInterface;
 import controller.StateManagement.StateManagement;
 import database.Connectors.GeneralDBConnector;
 import database.Connectors.enums.DBTypes;
 import database.Connectors.enums.TableTypes;
 import model.Model;
-import model.ModifyRamClasses;
+import model.pizza.Dough;
+import model.pizza.Drinks.Drinks;
+import model.pizza.Ingredient;
+import model.pizza.Pizza;
 import view.TextColor.LetterColors;
 
-import java.util.List;
 import java.util.Objects;
 
 public class OrderController extends ControllerState{
@@ -45,18 +46,28 @@ public class OrderController extends ControllerState{
         switch (optionSelected){
             //PIZZA CASE
             case 1:
-                // getting all the pizza elements
+                // getting all the PIZZA ELEMENTS
                 Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).getAll(TableTypes.PIZZA, Model.getInstance().getCurrentDelegation());
                 //printing the received pizzas
-                context.view.printObjectList(Model.getInstance().getAllPizzas(),"pizzas");
-                //asking for extra ingredients
+                Pizza selectedPizza = (Pizza) context.view.printObjectList(Model.getInstance().getAllPizzas(),"pizza");
+                int pizzaQuantity = context.view.askForQuantity();
+                //show all DOUGHS
+                Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).getAll(TableTypes.DOUGH);
+                // print and select dough
+                Dough dough = (Dough) context.view.printObjectList(Model.getInstance().getDoughs(),"dough");
+                //asking for EXTRA INGREDIENTS
+                Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).getAll(TableTypes.INGREDIENT);
+                //printing received ingredients
+                Ingredient selectedIngredient = (Ingredient) context.view.printObjectList(Model.getInstance().getIngredients(),"ingredient");
+                int ingredientQuantity = context.view.askForQuantity();
                 break;
             //DRINKS CASE
             case 2:
                 // getting all the drinks available in the store
                 Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).getAll(TableTypes.DRINK);
                 // printing all the drinks to the screen
-                context.view.printObjectList(Model.getInstance().getDrinks(), "drinks");
+                Drinks drinks = (Drinks) context.view.printObjectList(Model.getInstance().getDrinks(), "drink");
+                int drinksQuantity = context.view.askForQuantity();
                 break;
             case 3:
                 //order finished
