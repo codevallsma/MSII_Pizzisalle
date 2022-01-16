@@ -1,8 +1,7 @@
 package controller;
 
 import controller.StateManagement.ChangeStateInterface;
-import model.Delegation.Delegation;
-import model.Delegation.DelegationBuilder;
+import model.Delegation.DelegationFactory;
 
 public class DelegationController extends ControllerState{
 
@@ -30,6 +29,6 @@ public class DelegationController extends ControllerState{
 
     @Override
     protected void doAction() {
-        this.context.model.setCurrentDelegation(DelegationBuilder.buildDelegation(optionSelected));
+        this.context.model.setCurrentDelegation(DelegationFactory.getDelegation(optionSelected));
     }
 }

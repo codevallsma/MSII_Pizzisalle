@@ -4,8 +4,7 @@ import database.Connectors.MysqlConnector;
 import database.Connectors.enums.DBMethods;
 import database.Connectors.enums.TableTypes;
 import database.repositories.BaseRepositories;
-import model.Customer;
-import model.Delegation.DelegationBuilder;
+import model.Delegation.DelegationFactory;
 import model.Model;
 import model.Orders.CustomerOrder;
 
@@ -14,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class MysqlCOrderRepo extends BaseRepositories {
     @Override
@@ -68,7 +66,7 @@ public class MysqlCOrderRepo extends BaseRepositories {
         try {
             return new CustomerOrder(Integer.parseInt(resultSet.getString("id_order")),
                     Integer.parseInt(resultSet.getString("id_customer")),
-                    DelegationBuilder.buildDelegation(Integer.parseInt(resultSet.getString("id_delegation"))),
+                    DelegationFactory.getDelegation(Integer.parseInt(resultSet.getString("id_delegation"))),
                     new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(resultSet.getString("date")));
         } catch (ParseException e) {
             e.printStackTrace();

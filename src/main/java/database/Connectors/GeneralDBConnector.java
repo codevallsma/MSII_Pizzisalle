@@ -10,6 +10,10 @@ import java.beans.PropertyChangeListener;
 //  - mysql
 // - neo4j
 
+/**
+ * BUILDER method that allows us to switch between the mysql and node4j connectors,
+ * They both implement the CrudOperations interface and this class is acting as a director
+ */
 public abstract class GeneralDBConnector implements GenericDB {
     protected String userName;
     protected String password;

@@ -7,9 +7,10 @@ import database.repositories.mysql.MysqlCustomerRepo;
 
 import java.util.EnumMap;
 
-//FLYWEIGHT METHOD
-// We apply the FLYWEIGHT method in order to save RAM, because imagine the memory usage we would use if everytime we
-// want to make a query we had to create the corresponding repository
+/**FLYWEIGHT METHOD
+ * We apply the FLYWEIGHT method in order to save RAM memory, because imagine the memory usage we would use if everytime we
+ * want to make a query we had to create the corresponding repository
+ */
 
 public abstract class RepositoriesFactory {
     private final EnumMap<TableTypes, BaseRepositories> repositories;

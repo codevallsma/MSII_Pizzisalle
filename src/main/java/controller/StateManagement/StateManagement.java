@@ -4,7 +4,12 @@ import controller.*;
 
 import java.util.*;
 
-//
+/** STATE PATTERN
+ * I implemented the state pattern in all controllers in order to avoid having a huge controller file containing all the functionalities of the program
+ * The state pattern also helps us to reuse some states, therefore, writing LESS code.
+ * There is an example of this when updating or creating a user at the start of the program or by selecting the 3rd option of the main menu using the
+ * Update Credentials controller
+ */
 public class StateManagement implements ChangeStateInterface {
     private  ControllerState currentState;
     private EnumMap<StateTypes,ControllerState> controllerStates;

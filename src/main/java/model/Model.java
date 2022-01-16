@@ -3,7 +3,7 @@ package model;
 import database.Connectors.MysqlConnector;
 import database.Connectors.enums.TableTypes;
 import model.Delegation.Delegation;
-import model.Delegation.DelegationBuilder;
+import model.Delegation.DelegationFactory;
 import model.Delegation.DelegationCentral;
 import model.Orders.CustomerOrder;
 import model.Orders.ExtraIngredients;
@@ -16,12 +16,13 @@ import model.pizza.Pizza;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
  * OBSERVER METHOD
  * Every time the data is updated in the database, it is also updated in the Model of the application
+ * SINGLETON PATTERN
+ * There can only be one model, therefore this class is also a singleton class
  */
 
 public class Model implements PropertyChangeListener {
@@ -53,7 +54,7 @@ public class Model implements PropertyChangeListener {
         // length is the upper bound of the random number selector
         int random_index = random.nextInt(DelegationCentral.values().length);
         //System.out.println("EL NUMERO ES "+random_index+" i el length es "+DelegationCentral.values().length);
-        currentDelegation = DelegationBuilder.buildDelegation(random_index+1);
+        currentDelegation = DelegationFactory.getDelegation(random_index+1);
     }
 
     public static Model getInstance() {

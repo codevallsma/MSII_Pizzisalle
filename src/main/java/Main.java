@@ -13,6 +13,7 @@ import java.util.Objects;
 
 /**
  * IMPORTANT!!! EXECUTE THE DATABASE_STRUCTURE FILE ON MYSQL BEFORE EXECUTING THE JAVA MAIN
+ * ALSO EDIT THE VALUES OF THE assets/.env file
  */
 public class Main {
     public static void main(String[] args) throws Exception {

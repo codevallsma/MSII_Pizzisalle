@@ -1,9 +1,12 @@
 package model.Delegation;
 
-//Factory method
+/**
+ * Factory method allows us to create diferent delegations according to the input given
+ * This class is a Strategy factory
+ */
 
-public class DelegationBuilder {
-    public static Delegation buildDelegation(int optionSelected){
+public class DelegationFactory {
+    public static Delegation getDelegation(int optionSelected){
         switch (optionSelected){
             case 1:
                 return new BarcelonaDelegation(1,DelegationCentral.BARCELONA.toString());
