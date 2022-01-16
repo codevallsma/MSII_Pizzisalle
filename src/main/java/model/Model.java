@@ -6,6 +6,7 @@ import model.Delegation.Delegation;
 import model.Delegation.DelegationBuilder;
 import model.Delegation.DelegationCentral;
 import model.Orders.CustomerOrder;
+import model.Orders.ExtraIngredients;
 import model.Orders.Order;
 import model.Orders.OrderItem;
 import model.pizza.Dough;
@@ -91,7 +92,21 @@ public class Model implements PropertyChangeListener {
                 break;
             case ORDER_ITEMS:
                 //adding the inserted customer item to the current order
-                this.orders.get(index_orders).getOrderItems().add((OrderItem) evt.getNewValue());
+                OrderItem orderItem = (OrderItem) evt.getNewValue();
+                Order currentOrder = findOrderById(orderItem.getId_order());
+                currentOrder.getOrderItems().add(orderItem);
+                break;
+            case EXTRA_INGREDIENTS:
+                ExtraIngredients extraIngredient = (ExtraIngredients) evt.getNewValue();
+                ExtraIngredients found = findExtraIngredientByIds(extraIngredient.getId_order(), extraIngredient.getId_order_item(), extraIngredient.getId_ingredient());
+                OrderItem orderItemExtra = findOrderItemById(extraIngredient.getId_order(), extraIngredient.getId_order_item());
+                if(found != null){
+                    //removing found element to replace it with the new one
+                    orderItemExtra.getExtraIngredients().remove(extraIngredient);
+                }
+                //add the inserted extra ingredient to the order item
+                orderItemExtra.getExtraIngredients().add(extraIngredient);
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + evt.getPropertyName());
         }
@@ -116,10 +131,29 @@ public class Model implements PropertyChangeListener {
     public List<Order> getOrders() {
         return orders;
     }
+    public Order getLastOrder(){
+        return orders.get(index_orders-1);
+    }
 
     public void addOrder(Order order){
         this.orders.add(order);
         index_orders++;
+    }
+    public Order findOrderById(Integer index_order){
+        Optional<Order> order =  this.orders.stream().filter(e-> e.getId_order().equals(index_order)).findFirst();
+        return order.orElse(null);
+    }
+    public OrderItem findOrderItemById(Integer idOrder, Integer id_order_item){
+        Order order = findOrderById(idOrder);
+        return order.getOrderItems().stream().filter(e -> e.getId_order_item() == id_order_item).findFirst().orElse(null);
+    }
+    public ExtraIngredients findExtraIngredientByIds(Integer idOrder,  Integer id_order_item, Integer extra_ing_Id){
+        Order order = findOrderById(idOrder);
+        OrderItem orderItem = order.getOrderItems().stream().filter(e -> e.getId_order_item() == id_order_item).findFirst().orElse(null);
+        if (orderItem != null){
+            return  orderItem.getExtraIngredients().stream().filter(e -> e.getId_ingredient().equals(extra_ing_Id)).findFirst().orElse(null);
+        }
+        return null;
     }
 
     public List<Pizza> getAllPizzas() {

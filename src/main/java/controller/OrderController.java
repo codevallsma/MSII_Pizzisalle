@@ -6,6 +6,7 @@ import database.Connectors.enums.DBTypes;
 import database.Connectors.enums.TableTypes;
 import model.Model;
 import model.Orders.CustomerOrder;
+import model.Orders.ExtraIngredients;
 import model.Orders.Order;
 import model.Orders.OrderItem;
 import model.pizza.Dough;
@@ -135,8 +136,33 @@ public class OrderController extends ControllerState{
                     CustomerOrder customerOrder = new CustomerOrder(this.context.model.getCurrentCustomer().getCustomerId(), context.model.getCurrentDelegation());
                     Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).insertAndGetId(customerOrder, TableTypes.CUSTOMER_ORDER);
                     //get the COrder id and put it to the order class
-                    this.context.model.addOrder(new Order(orderItems));
+                    this.context.model.addOrder(new Order(this.context.model.getCustomerOrder().getIdOrder()));
                     //insert all the orderItems to the database
+                    for (OrderItem orderItem:
+                         orderItems) {
+                        ArrayList<ExtraIngredients> extraIngredients = (ArrayList<ExtraIngredients>) orderItem.getExtraIngredients().clone();
+                        //removing all extra ingredients
+                        orderItem.cleanExtraIngredients();
+                        //adding the order id to the order item
+                        orderItem.setId_order(this.context.model.getLastOrder().getId_order());
+                        //inserting the order item
+                        Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).insertAndGetId(orderItem, TableTypes.ORDER_ITEMS);
+                        try {
+                            //find the last inserted order item
+                            OrderItem orderItemLast =this.context.model.getLastOrder().getOrderItems().get(this.context.model.getLastOrder().getOrderItems().size()-1);
+                            for (ExtraIngredients extraIngredientsObject:
+                                  extraIngredients) {
+                                //adding the id order item to the extra ingredient
+                                extraIngredientsObject.setId_order_item(orderItemLast.getId_order_item());
+                                extraIngredientsObject.setId_order(orderItemLast.getId_order());
+                                // inserting the extra ingredients
+                                Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).insertAndGetId(extraIngredientsObject, TableTypes.EXTRA_INGREDIENTS);
+
+                            }
+                        }catch (IndexOutOfBoundsException e){
+                            e.printStackTrace();
+                        }
+                    }
                     //for each order item add the extra ingredient
                 }
                 break;

@@ -12,7 +12,7 @@ public class OrderItem implements ModifyRamClasses {
     private Integer id_order_item;
     //only id in database
     private Pizza pizza;
-    private int pizzaQuantity;
+    private Integer pizzaQuantity;
     private Dough dough;
     // extra ingredients the user will be able to ask for
     private ArrayList<ExtraIngredients> extraIngredients;
@@ -71,6 +71,9 @@ public class OrderItem implements ModifyRamClasses {
     public void addExtraIngredient(Ingredient extraIngredient, int ingredientQuantity){
         this.extraIngredients.add(new ExtraIngredients(extraIngredient.getId_ingredient(),ingredientQuantity));
     }
+    public void cleanExtraIngredients(){
+        this.extraIngredients = new ArrayList<>();
+    }
 
     public Dough getDough() {
         return dough;
@@ -112,5 +115,17 @@ public class OrderItem implements ModifyRamClasses {
     @Override
     public String getName() {
         return Integer.toString(id_order_item);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderItem that = (OrderItem) o;
+        return that.id_order_item.equals(this.id_order_item)
+                && that.drink.equals((this.drink))
+                && that.pizza.equals(this.pizza)
+                && this.drinkQuantity.equals(that.drinkQuantity)
+                &&this.pizzaQuantity.equals(that.pizzaQuantity);
     }
 }

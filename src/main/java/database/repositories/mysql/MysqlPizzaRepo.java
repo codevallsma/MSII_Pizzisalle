@@ -16,27 +16,7 @@ import java.sql.SQLException;
 public class MysqlPizzaRepo extends BaseRepositories {
     @Override
     public void onSuccess(Object object, DBMethods dbMethods) {
-        try{
-            Object newObject = null;
-            switch (dbMethods){
-                case INSERT: case UPDATE: case GET_ALL:
-                    // we just inserted this object in the database
-                    newObject = object;
-                    break;
-                case GET:
-                    newObject = resultSetToObject((ResultSet) object);
-                    break;
-                case DELETE:
-                    // to delete the whole object we will replace the current object for one that it is null
-                    // however it is already assigned
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + dbMethods);
-            }
-            this.observer.firePropertyChange(TableTypes.PIZZA.toString(), Model.getInstance().getAllPizzas(), newObject);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        onSuccessBaseRepo(object,  Model.getInstance().getAllPizzas(),dbMethods, TableTypes.PIZZA.toString());
     }
 
     @Override

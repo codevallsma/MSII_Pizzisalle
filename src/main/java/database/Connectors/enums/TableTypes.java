@@ -7,7 +7,8 @@ public enum TableTypes {
     INGREDIENT("Ingredient"),
     DOUGH("Dough"),
     CUSTOMER_ORDER("CustomerOrder"),
-    ORDER_ITEMS("OrderItems");
+    ORDER_ITEMS("OrderItems"),
+    EXTRA_INGREDIENTS("ExtraIngredients");
 
     private final String tableType;
     TableTypes(String tableType) {
