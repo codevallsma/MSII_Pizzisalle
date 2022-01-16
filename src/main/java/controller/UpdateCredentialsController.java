@@ -9,6 +9,8 @@ import model.Customer;
 import model.Model;
 import view.TextColor.LetterColors;
 
+import java.util.Objects;
+
 public class UpdateCredentialsController extends ControllerState{
     private Customer customer;
     public UpdateCredentialsController(ControllerContext context, StateManagement stateManagement) {
@@ -24,6 +26,7 @@ public class UpdateCredentialsController extends ControllerState{
     @Override
     public void onNext() {
         this.changeStateInterface.pushState(StateTypes.PRINT_CUSTOMER_INFO);
+        this.context.insert = false;
     }
 
     @Override
@@ -40,8 +43,14 @@ public class UpdateCredentialsController extends ControllerState{
 
     @Override
     protected void doAction() {
-        //check if the user currently
-        GeneralDBConnector.getDB(DBTypes.MYSQL).insertAndGetId(customer, TableTypes.CUSTOMER);
+        if(this.context.insert){
+            //check if the user currently
+            Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).insertAndGetId(customer, TableTypes.CUSTOMER);
+        }else{
+            customer.insertID(this.context.model.getCurrentCustomer().getCustomerId());
+            Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).update(customer, TableTypes.CUSTOMER);
+        }
+
 
     }
 }

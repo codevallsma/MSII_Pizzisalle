@@ -146,7 +146,13 @@ public class MysqlConnector extends GeneralDBConnector implements GenericDB {
 
     @Override
     public void update(Object object, TableTypes tableTypes) {
-
+        try {
+            BaseRepositories br = MapMethodToFunction.getInstance().entityToBaseRepo(this.dbType, tableTypes);
+            PreparedStatement ps = MapMethodToFunction.getInstance().entityAction(DBMethods.UPDATE, br, object);
+            executeUpdateOrDelete(ps, br,object, DBMethods.UPDATE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

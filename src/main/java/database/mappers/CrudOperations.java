@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public interface CrudOperations <ReturnParameter,Object> {
   ReturnParameter insert(Object object) throws SQLException;
   ReturnParameter delete(Object object);
-  ReturnParameter update(Object object);
+  ReturnParameter update(Object object) throws SQLException;
   ReturnParameter get(Object object);
   ReturnParameter getById(Object object) throws SQLException;
   ReturnParameter getAll(Object object) throws SQLException;

@@ -47,8 +47,19 @@ public class MysqlCustomerRepo extends BaseRepositories {
     }
 
     @Override
-    public PreparedStatement update(Object object) {
-        return null;
+    public PreparedStatement update(Object object) throws SQLException {
+        Customer customer = (Customer) object;
+        PreparedStatement preparedStatement = MysqlConnector.getInstance().getConn().prepareStatement(
+                "UPDATE Customer as c  SET c.name =?,c.surname1 =?, c.surname2 =?, c.phone_number=?, c.address=?, c.city=? WHERE c.id_customer =?;"
+                , PreparedStatement.RETURN_GENERATED_KEYS);
+        preparedStatement.setString((int)1,  customer.getName());
+        preparedStatement.setString((int)2,  customer.getSurname1());
+        preparedStatement.setString((int)3,  customer.getSurname2());
+        preparedStatement.setString((int)4,  customer.getPhone_number());
+        preparedStatement.setString((int)5,  customer.getAddress());
+        preparedStatement.setString((int)6,  customer.getCity());
+        preparedStatement.setObject((int)7,  customer.getCustomerId());
+        return preparedStatement;
     }
 
     @Override

@@ -32,8 +32,10 @@ public class WelcomeController extends ControllerState {
         //if the user already exists does not ask to fill the user form and show all menu
 
         //if the user does not exist, we change this state to the one that updates credentials (we push the current state)
-        if(userInput ==2)
-        this.changeStateInterface.pushState(StateTypes.UPDATE_CREDENTIALS);
+        if(userInput ==2) {
+            this.changeStateInterface.pushState(StateTypes.UPDATE_CREDENTIALS);
+            this.context.insert = true;
+        }
         else this.changeStateInterface.pushState(StateTypes.PRINT_CUSTOMER_INFO);
     }
 

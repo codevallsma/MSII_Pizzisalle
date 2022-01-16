@@ -14,11 +14,13 @@ import view.View;
 public class ControllerContext {
     protected View view;
     protected Model model;
+    protected boolean insert;
 
 
     public ControllerContext(View view, Model model) {
         this.view = view;
         this.model = model;
+        insert = false;
     }
 
     public void checkIfUser(){
