@@ -30,12 +30,12 @@ public class MysqlOrderItemRepo extends BaseRepositories {
         PreparedStatement preparedStatement = MysqlConnector.getInstance().getConn().prepareStatement(
                 "INSERT INTO OrderItem (id_pizza, pizza_quantity, id_massa, id_drink, drink_quantity, id_order) VALUES (?,?,?,?,?,?);"
                 , PreparedStatement.RETURN_GENERATED_KEYS);
-        preparedStatement.setInt(1,  orderItem.getPizza().getId_pizza());
-        preparedStatement.setInt((int)2,  orderItem.getPizzaQuantity());
-        preparedStatement.setInt((int)3,  orderItem.getDough().getId_massa());
-        preparedStatement.setInt((int)4,  orderItem.getDrink().getId_drink());
-        preparedStatement.setInt((int)5,  orderItem.getDrinkQuantity());
-        preparedStatement.setInt(6,  orderItem.getId_order());
+        preparedStatement.setObject(1, (orderItem.getPizza() != null) ? orderItem.getPizza().getId_pizza() : null);
+        preparedStatement.setObject((int)2,  orderItem.getPizzaQuantity());
+        preparedStatement.setObject((int)3,  (orderItem.getDough() != null) ? orderItem.getDough().getId_massa() : null );
+        preparedStatement.setObject((int)4,  (orderItem.getDrink() != null) ? orderItem.getDrink().getId_drink() : null );
+        preparedStatement.setObject((int)5,  orderItem.getDrinkQuantity());
+        preparedStatement.setObject(6,  orderItem.getId_order());
         return preparedStatement;
     }
 

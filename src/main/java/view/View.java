@@ -1,13 +1,15 @@
 package view;
 
 import model.Customer;
-import model.Delegation.Delegation;
 import model.ModifyRamClasses;
+import model.Orders.Order;
+import model.Orders.OrderItem;
 import view.TextColor.LetterColors;
 import view.TextColor.PrintWithColors;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class View {
     private Scanner scanner;
@@ -129,6 +131,35 @@ public class View {
                 "\t[4]. Girona\n" +
                 "Delegacio: ");
     }
+
+    public void printCartInfo(List<Order> orders){
+        AtomicReference<StringBuilder> stringBuilder = new AtomicReference<>(new StringBuilder());
+        stringBuilder.get().append("\n------------------------------------------------------------------\n");
+        if(orders.size()==0){
+            stringBuilder.get().append("\nTHERE HAS NOT BEEN ANY ORDER RECENTLY\n");
+        }else {
+            stringBuilder.get().append("\n---SHOWING ALL RECENTLY MADE ORDERS---\n");
+        }
+        stringBuilder.get().append("\n------------------------------------------------------------------\n");
+        for (Order order:
+             orders) {
+            stringBuilder.get().append("\n----------------------- Order id: ").append(order.getId_order()).append(" -----------------------\n");
+            for (OrderItem orderItem:
+                    order.getOrderItems()) {
+                stringBuilder.get().append("\n----------- Order item id: ").append(orderItem.getId_order_item()).append(" -----------\n");
+                stringBuilder.get().append("\n Pizza: ").append((orderItem.getPizza() != null) ? orderItem.getPizza().getName() : null).append("\n");
+                stringBuilder.get().append("\n Pizza quantity: ").append(orderItem.getPizzaQuantity()).append("\n");
+                stringBuilder.get().append("\n Drink: ").append((orderItem.getDrink() != null) ? orderItem.getDrink().getName() : null).append("\n");
+                stringBuilder.get().append("\n Drink quantity: ").append(orderItem.getDrinkQuantity()).append("\n");
+                stringBuilder.get().append("\n Number of extra ingredients: ").append(orderItem.getExtraIngredients().size()).append("\n");
+                stringBuilder.get().append("\n----------------------------------\n");
+            }
+            stringBuilder.get().append("\n---------------------------------------------------------\n");
+        }
+        //printing all information to the screen
+        PrintWithColors.printColorText(LetterColors.GREEN,stringBuilder.toString());
+    }
+
 
     public void errorMessageMenu(int limit){
         PrintWithColors.printColorText(LetterColors.RED,"*************************************************");

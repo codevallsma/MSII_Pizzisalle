@@ -11,6 +11,9 @@ import view.View;
 
 import java.util.Objects;
 
+/**
+ * IMPORTANT!!! EXECUTE THE DATABASE_STRUCTURE FILE ON MYSQL BEFORE EXECUTING THE JAVA MAIN
+ */
 public class Main {
     public static void main(String[] args) throws Exception {
         View  view = new View();

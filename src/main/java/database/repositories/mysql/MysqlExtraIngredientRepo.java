@@ -34,9 +34,9 @@ public class MysqlExtraIngredientRepo extends BaseRepositories {
         PreparedStatement preparedStatement = MysqlConnector.getInstance().getConn().prepareStatement(
                 "INSERT INTO ExtraIngredients (id_order_item, id_Ingredient, quantity) VALUES (?,?,?);"
                 , PreparedStatement.RETURN_GENERATED_KEYS);
-        preparedStatement.setInt(1,  extraIngredient.getId_order_item());
-        preparedStatement.setInt(2,  extraIngredient.getId_ingredient());
-        preparedStatement.setInt(3,  extraIngredient.getQuantity());
+        preparedStatement.setObject(1,  extraIngredient.getId_order_item());
+        preparedStatement.setObject(2,  extraIngredient.getId_ingredient());
+        preparedStatement.setObject(3,  extraIngredient.getQuantity());
         return preparedStatement;
     }
 

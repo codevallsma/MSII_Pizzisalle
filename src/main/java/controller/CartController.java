@@ -21,8 +21,7 @@ public class CartController extends ControllerState{
 
     @Override
     public void onNext() {
-        System.out.println("CART CONTROLLER");
-        //this.changeStateInterface.nextState();
+        //nothing to do here
     }
 
     @Override
@@ -34,6 +33,6 @@ public class CartController extends ControllerState{
 
     @Override
     protected void doAction() {
-        System.out.println("CART INFO NENEEEE");
+        this.context.view.printCartInfo(this.context.model.getOrders());
     }
 }
