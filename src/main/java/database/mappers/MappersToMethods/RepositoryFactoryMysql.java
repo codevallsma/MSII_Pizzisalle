@@ -18,6 +18,8 @@ public class RepositoryFactoryMysql extends RepositoriesFactory{
                 return new MysqlIngredientRepo();
             case DOUGH:
                 return new MysqlDough();
+            case CUSTOMER_ORDER:
+                return new MysqlCOrderRepo();
         }
         return null;
     }

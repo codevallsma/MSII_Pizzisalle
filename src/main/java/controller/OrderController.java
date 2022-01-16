@@ -5,36 +5,70 @@ import database.Connectors.GeneralDBConnector;
 import database.Connectors.enums.DBTypes;
 import database.Connectors.enums.TableTypes;
 import model.Model;
+import model.Orders.CustomerOrder;
+import model.Orders.Order;
+import model.Orders.OrderItem;
 import model.pizza.Dough;
 import model.pizza.Drinks.Drinks;
 import model.pizza.Ingredient;
 import model.pizza.Pizza;
 import view.TextColor.LetterColors;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class OrderController extends ControllerState{
+    private OrderItem orderItem;
+    private ArrayList<OrderItem> orderItems;
+    private int indexOrders=0;
+    private boolean usefulOptionSelected;
 
     public OrderController(ControllerContext context, StateManagement stateManagement) {
         super(context,stateManagement);
     }
 
+    /**
+     * In an order item there can only be one pizza and one drink, therefore if both options are already selected, we have to create
+     * a new orderItem class
+     */
+    void checkIfCreateNeeded(){
+        //option 1 with already selected pizza
+        //option 2 with already selected drink
+        //if both options are null.
+        if((orderItems.get(indexOrders).getPizza() !=null && optionSelected ==1) || (orderItems.get(indexOrders).getDrink() !=null && optionSelected ==2) || (orderItems.get(indexOrders).getPizza() !=null && orderItems.get(indexOrders).getDrink()!=null)){
+            orderItem = new OrderItem();
+            orderItems.add(orderItem);
+            indexOrders++;
+        }
+    }
+
     @Override
     public void showMenuAndInteract() {
+        orderItem = new OrderItem();
+        indexOrders=0;
+        orderItems = new ArrayList<>();
+        orderItems.add(orderItem);
         //showing the current delegation in which we are making an order
         this.context.view.printToScreenColor(this.context.model.getCurrentDelegation().getName()+" is the current delegation", LetterColors.BLUE);
-        //there is no more than 3 options to select
+        usefulOptionSelected = false;
         do {
+            //there is no more than 3 options to select
             showMenuAndCheckIfInbounds(3);
             doAction();
+            //the user at least has selected one item in order to create an order
+            if (optionSelected != 3) usefulOptionSelected =true;
         }while (optionSelected != 3);
     }
 
     @Override
     public void onNext() {
-        //thank you for your order
-        this.context.view.printToScreenColor("Thank you for your order!", LetterColors.CYAN);
         //in this case we will not update the state
+        if(usefulOptionSelected) {
+            //thank you for your order
+            this.context.view.printToScreenColor("Thank you for your order!", LetterColors.CYAN);
+        } else{
+            this.context.view.printToScreenColor("Making an order is not that difficult :-(", LetterColors.RED);
+        }
     }
 
     @Override
@@ -48,6 +82,8 @@ public class OrderController extends ControllerState{
         switch (optionSelected){
             //PIZZA CASE
             case 1:
+                //we check if we have to create a new order item
+                checkIfCreateNeeded();
                 // getting all the PIZZA ELEMENTS
                 Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).getAll(TableTypes.PIZZA, Model.getInstance().getCurrentDelegation());
                 //printing the received pizzas
@@ -58,21 +94,51 @@ public class OrderController extends ControllerState{
                 // print and select dough
                 Dough dough = (Dough) context.view.printObjectList(Model.getInstance().getDoughs(),"dough");
                 //asking for EXTRA INGREDIENTS
-                Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).getAll(TableTypes.INGREDIENT);
-                //printing received ingredients
-                Ingredient selectedIngredient = (Ingredient) context.view.printObjectList(Model.getInstance().getIngredients(),"ingredient");
-                int ingredientQuantity = context.view.menuAskOption("How much of this product do you want?(Quantities go from 1 to 10) ",10);
+                int extraIngredientSelected =0;
+                do {
+                    extraIngredientSelected = this.context.view.menuAskOption(this.context.view.askExtraIngredients(), 2);
+                    if (extraIngredientSelected == 1) {
+                        //EXTRA INGREDIENTS SELECTION
+                        Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).getAll(TableTypes.INGREDIENT);
+                        //printing received ingredients
+                        Ingredient selectedIngredient = (Ingredient) context.view.printObjectList(Model.getInstance().getIngredients(), "ingredient");
+                        int ingredientQuantity = context.view.menuAskOption("How much of this product do you want?(Quantities go from 1 to 10) ", 10);
+                        //adding extra ingedient
+                        orderItem.addExtraIngredient(selectedIngredient, ingredientQuantity);
+                    }
+                }while(extraIngredientSelected !=2);
+                //setting pizza
+                orderItem.setPizza(selectedPizza);
+                orderItem.setPizzaQuantity(pizzaQuantity);
+                //Dough
+                orderItem.setDough(dough);
+                //Inserting
                 break;
             //DRINKS CASE
             case 2:
+                //we check if we have to create a new order item
+                checkIfCreateNeeded();
                 // getting all the drinks available in the store
                 Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).getAll(TableTypes.DRINK);
                 // printing all the drinks to the screen
                 Drinks drinks = (Drinks) context.view.printObjectList(Model.getInstance().getDrinks(), "drink");
                 int drinksQuantity = context.view.menuAskOption("How much of this product do you want?(Quantities go from 1 to 10) ",10);
+                // adding drinks
+                orderItem.setDrink(drinks);
+                orderItem.setDrinkQuantity(drinksQuantity);
                 break;
             case 3:
                 //order finished
+                //we make an order if the user previously selected to buy something
+                if(usefulOptionSelected) {
+                    //insert COrder
+                    CustomerOrder customerOrder = new CustomerOrder(this.context.model.getCurrentCustomer().getCustomerId(), context.model.getCurrentDelegation());
+                    Objects.requireNonNull(GeneralDBConnector.getDB(DBTypes.MYSQL)).insertAndGetId(customerOrder, TableTypes.CUSTOMER_ORDER);
+                    //get the COrder id and put it to the order class
+                    this.context.model.addOrder(new Order(orderItems));
+                    //insert all the orderItems to the database
+                    //for each order item add the extra ingredient
+                }
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + optionSelected);

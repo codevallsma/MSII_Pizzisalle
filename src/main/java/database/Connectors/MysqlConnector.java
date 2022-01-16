@@ -49,7 +49,6 @@ public class MysqlConnector extends GeneralDBConnector implements GenericDB {
         ResultSet rs = ps.getGeneratedKeys();
         rs.next();
         Integer id = rs.getInt(1);
-        System.out.println(id);
         object.insertID(id);
         if(!subquery)baseRepository.onSuccess(object,DBMethods.INSERT);
         return id;

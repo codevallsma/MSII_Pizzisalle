@@ -7,6 +7,7 @@ import model.Delegation.DelegationBuilder;
 import model.Delegation.DelegationCentral;
 import model.Orders.CustomerOrder;
 import model.Orders.Order;
+import model.Orders.OrderItem;
 import model.pizza.Dough;
 import model.pizza.Drinks.Drinks;
 import model.pizza.Ingredient;
@@ -33,6 +34,7 @@ public class Model implements PropertyChangeListener {
     //List of all dough
     private List<Dough> doughs;
     private List<Ingredient> ingredients;
+    private int index_orders;
     //current delegation
     Delegation currentDelegation;
     private static Model instance = null;
@@ -44,6 +46,7 @@ public class Model implements PropertyChangeListener {
         allPizzas = new ArrayList<>();
         ingredients = new ArrayList<>();
         doughs = new ArrayList<>();
+        index_orders = 0;
         // when initializing the model we have to randomly select a delegation
         Random random = new Random();
         // length is the upper bound of the random number selector
@@ -83,6 +86,12 @@ public class Model implements PropertyChangeListener {
             case DOUGH:
                 this.setDoughs((List<Dough>) evt.getNewValue());
                 break;
+            case CUSTOMER_ORDER:
+                this.setCustomerOrder((CustomerOrder)evt.getNewValue());
+                break;
+            case ORDER_ITEMS:
+                //adding the inserted customer item to the current order
+                this.orders.get(index_orders).getOrderItems().add((OrderItem) evt.getNewValue());
             default:
                 throw new IllegalStateException("Unexpected value: " + evt.getPropertyName());
         }
@@ -108,8 +117,9 @@ public class Model implements PropertyChangeListener {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void addOrder(Order order){
+        this.orders.add(order);
+        index_orders++;
     }
 
     public List<Pizza> getAllPizzas() {
@@ -146,6 +156,10 @@ public class Model implements PropertyChangeListener {
 
     public Delegation getCurrentDelegation() {
         return currentDelegation;
+    }
+
+    public void setCurrentDelegation(Delegation currentDelegation) {
+        this.currentDelegation = currentDelegation;
     }
 
     public void subscribeTables(){

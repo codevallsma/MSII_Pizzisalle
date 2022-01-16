@@ -5,7 +5,9 @@ public enum TableTypes {
     PIZZA("Pizza"),
     DRINK("Drink"),
     INGREDIENT("Ingredient"),
-    DOUGH("Dough");
+    DOUGH("Dough"),
+    CUSTOMER_ORDER("CustomerOrder"),
+    ORDER_ITEMS("OrderItems");
 
     private final String tableType;
     TableTypes(String tableType) {

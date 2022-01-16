@@ -32,13 +32,20 @@ public class View {
     public void printUserInformation(Customer customer, String delegation) {
         PrintWithColors.printColorText(LetterColors.GREEN,"" +
                 "----------------------------------------------------------------\n" +
-                " CUSTOMER INFORMATION: "+
+                "CUSTOMER INFORMATION: "+
                 "\nClient id: " + customer.getCustomerId() +
                 "\nClient name: " + customer.getName() +
                 "\nClient surname: " + customer.getSurname1() +
                 "\nClient last name: " + customer.getSurname2() +
                 "\nDelegation: " + delegation +
                 "\n----------------------------------------------------------------");
+    }
+
+    public String askExtraIngredients() {
+        return  "\nDo you want extra ingredients for this type of pizza?\n" +
+                "\t[1] Yes\n" +
+                "\t[2] No\n"+
+                "Select option: ";
     }
 
     public void createCustomerMenu() {

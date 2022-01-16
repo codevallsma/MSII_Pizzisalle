@@ -3,12 +3,13 @@ package model.Orders;
 import model.ModifyRamClasses;
 import model.pizza.Drinks.Drinks;
 import model.pizza.Dough;
+import model.pizza.Ingredient;
 import model.pizza.Pizza;
 
 import java.util.ArrayList;
 
 public class OrderItem implements ModifyRamClasses {
-    private int id_order_item;
+    private Integer id_order_item;
     //only id in database
     private Pizza pizza;
     private int pizzaQuantity;
@@ -30,6 +31,10 @@ public class OrderItem implements ModifyRamClasses {
         this.drink = drink;
         this.drinkQuantity = drinkQuantity;
         this.id_order = id_order;
+    }
+
+    public OrderItem() {
+        extraIngredients = new ArrayList<>();
     }
 
     public int getId_order_item() {
@@ -63,12 +68,15 @@ public class OrderItem implements ModifyRamClasses {
     public void setExtraIngredients(ArrayList<ExtraIngredients> extraIngredients) {
         this.extraIngredients = extraIngredients;
     }
+    public void addExtraIngredient(Ingredient extraIngredient, int ingredientQuantity){
+        this.extraIngredients.add(new ExtraIngredients(extraIngredient.getId_ingredient(),ingredientQuantity));
+    }
 
-    public Dough getMassa() {
+    public Dough getDough() {
         return dough;
     }
 
-    public void setMassa(Dough dough) {
+    public void setDough(Dough dough) {
         this.dough = dough;
     }
 

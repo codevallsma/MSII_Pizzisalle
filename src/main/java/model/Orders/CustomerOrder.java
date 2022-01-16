@@ -3,6 +3,7 @@ package model.Orders;
 import model.Delegation.Delegation;
 import model.ModifyRamClasses;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CustomerOrder implements ModifyRamClasses {
@@ -24,6 +25,12 @@ public class CustomerOrder implements ModifyRamClasses {
         this.idCustomer = idCustomer;
         this.delegation = delegation;
         this.date = date;
+    }
+    public CustomerOrder(int idCustomer, Delegation delegation) {
+        this.idCustomer = idCustomer;
+        this.delegation = delegation;
+        // default is current date
+        this.date = new Date();
     }
 
     public CustomerOrder() {
